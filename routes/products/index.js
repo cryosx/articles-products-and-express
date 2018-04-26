@@ -5,7 +5,15 @@ const router = express.Router();
 // const productsDbPath = path.join(__, 'db/products.js');
 
 const productsDB = require('../../db/products.js');
+const checkFieldsExist = require('../../util/checkFieldsExist.js');
+const checkFieldsDataType = require('../../util/checkFieldsData.js');
+
 let deleteError = null;
+
+router.use(checkFieldsExist(['name', 'price', 'inventory']));
+// router.use(
+//   checkFieldsDataType({ name: 'string', price: 'number', inventory: 'number' })
+// );
 router
   .route('/')
   .get((req, res) => {
@@ -42,7 +50,13 @@ router
   .route('/:id')
   .get((req, res) => {
     let prodID = Number.parseInt(req.params.id);
-    res.render('product', {
+    let prodExists = productsDB.get(prodID);
+
+    if (!prodExists) {
+      return res.render('404');
+    }
+
+    return res.render('product', {
       endpoint: 'products',
       product: productsDB.get(prodID)
     });
@@ -68,7 +82,7 @@ router
     let deleteFailed = productsDB.delete(prodID).length;
 
     if (deleteFailed) {
-      deleteError = 'Could  not delete product.';
+      deleteError = 'Could not delete product.';
     }
     return res.redirect(`/products`);
   });
