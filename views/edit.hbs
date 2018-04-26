@@ -1,10 +1,16 @@
-<form action="/{{endpoint}}/{{product.id}}" method="PUT">
+{{endpoint}}/{{product.id}}
+<form action="/{{endpoint}}/{{product.id}}?_method=PUT" method="POST">
+  <br>Name:
   <input type="text" name="name" value="{{product.name}}">
-  <br> Price:
+  <br>Price:
   <input type="text" name="price" value="{{product.price}}">
-  <br> Inventory:
+  <br>Inventory:
   <input type="text" name="inventory" value="{{product.inventory}}">
   <br>
   <br>
+  <a href="/{{endpoint}}/{{product.id}}"></a>
+  <button>Go back</button>
+  </a>
   <input type="submit">
 </form>
+<h1>{{error}}</h1>

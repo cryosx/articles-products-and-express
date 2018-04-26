@@ -2,6 +2,7 @@ const express = require('express');
 const server = express();
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
+const methodOverride = require('method-override');
 
 const routes = require('./routes');
 // const articlesRoutes = require('./routes/articles.js');
@@ -13,6 +14,8 @@ server.engine('.hbs', handlebars({ extname: '.hbs', defaultLayout: 'main' }));
 server.set('view engine', '.hbs');
 
 server.use(bodyParser.urlencoded({ extended: true }));
+
+server.use(methodOverride('_method'));
 
 server.use(express.static('public'));
 

@@ -3,6 +3,7 @@ module.exports = (function() {
   let uniqueID = 1;
   return {
     get: getProduct,
+    getByName: getProductByName,
     getAll: getAllProducts,
     create: createProduct,
     update: updateProduct,
@@ -11,6 +12,12 @@ module.exports = (function() {
   function getProduct(id) {
     let product = products.find(function(elem) {
       return elem.id === id;
+    });
+    return product;
+  }
+  function getProductByName(name) {
+    let product = products.find(function(elem) {
+      return elem.name === name;
     });
     return product;
   }
@@ -28,14 +35,22 @@ module.exports = (function() {
   }
   function updateProduct(id, data) {
     let product = getProduct(id);
-    console.log('put', product);
-    console.log('put', data);
 
-    for (const key in product) {
-      if (object.hasOwnProperty(key)) {
+    for (const key in data) {
+      if (data.hasOwnProperty(key)) {
         product[key] = data[key];
       }
     }
   }
-  function deleteProduct() {}
+  function deleteProduct(id) {
+    let prodIndex = null;
+    let product = products.find(function(elem, index) {
+      if (elem.id === id) {
+        prodIndex = index;
+        return true;
+      }
+      return false;
+    });
+    return products.splice(prodIndex, 1);
+  }
 })();
