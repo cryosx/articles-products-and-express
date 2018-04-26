@@ -1,0 +1,15 @@
+<a href="/{{endpoint}}/new">
+  <button>Add New Product</button>
+</a>
+<ol>
+  {{#if render}} {{#each products}}
+  <li>
+    <h3>Name:
+      <a href="/{{../endpoint}}/{{id}}"> {{name}}</a>
+    </h3>
+    <p>Price: {{price}}</p>
+    <p>Inventory: {{inventory}}</p>
+  </li>
+  {{/each}}
+  <h2>{{id}}</h2> {{/if}}
+</ol>
