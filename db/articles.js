@@ -9,7 +9,9 @@ module.exports = (function() {
   };
 
   function getArticles() {}
-  function getAllArticles() {}
+  function getAllArticles() {
+    return 'test';
+  }
   function createArticles() {}
   function updateArticles() {}
   function deleteArticles() {}
