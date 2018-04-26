@@ -37,7 +37,7 @@ module.exports = (function() {
     let product = getProduct(id);
 
     for (const key in data) {
-      if (data.hasOwnProperty(key)) {
+      if (product.hasOwnProperty(key)) {
         product[key] = data[key];
       }
     }
