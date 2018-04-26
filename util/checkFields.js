@@ -1,23 +1,39 @@
 module.exports = function(fields) {
   return function checkFields(req, res, next) {
-    if (!req.body) {
-      res.json({
-        succuess: false,
-        message: 'Does not have any fields',
-        fields: fields
-      });
+    if (Object.entries(req.body).length === 0) {
+      return next();
     }
+
     let data = req.body;
-    let hasEveryField = fields.every(function(field) {
-      return data.hasOwnProperty(field);
-    });
-    if (!hasEveryField) {
-      res.json({
-        succuess: false,
-        message: 'Does not have every field',
-        fields: fields
-      });
+
+    switch (req.method) {
+      case 'POST':
+        let haveEveryField = fields.every(function(field) {
+          return data.hasOwnProperty(field);
+        });
+
+        if (!haveEveryField) {
+          return res.json({
+            success: false,
+            message: 'Does not have every field',
+            fields: fields
+          });
+        }
+      case 'PUT':
+        let haveFields = Object.keys(data).every(function(field) {
+          return fields.includes(field);
+        });
+
+        if (!haveFields) {
+          return res.json({
+            success: false,
+            message: 'Fields do no match',
+            fields: fields
+          });
+        }
+      default:
     }
-    next();
+
+    return next();
   };
 };
