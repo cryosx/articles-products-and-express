@@ -1,27 +1,34 @@
 const express = require('express');
 const server = express();
+
 const bodyParser = require('body-parser');
 const handlebars = require('express-handlebars');
 const methodOverride = require('method-override');
 
+const analytics = require('./util/analytics.js');
+
 const routes = require('./routes');
-// const articlesRoutes = require('./routes/articles.js');
-// const productsRoutes = require('./routes/products.js');
 
 const PORT = process.env.PORT || 3000;
 
+// HANDLEBARS
 server.engine('.hbs', handlebars({ extname: '.hbs', defaultLayout: 'main' }));
 server.set('view engine', '.hbs');
 
+// BODY PARSING
 server.use(bodyParser.urlencoded({ extended: true }));
 
+// METHOD OVERRIDE
 server.use(methodOverride('_method'));
 
+// ANALYTICS
+server.use(analytics);
+
+// STATIC FOLDER
 server.use(express.static('public'));
 
+// ROUTING
 server.use('/', routes);
-// server.use('/articles', articlesRoutes);
-// server.use('/products', productsRoutes);
 
 server.get('*', (req, res) => {
   console.log(`Catchall GET`);
