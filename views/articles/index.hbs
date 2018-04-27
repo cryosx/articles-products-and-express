@@ -1,17 +1,17 @@
 <a href="/{{endpoint}}/new">
-  <button>Add New Product</button>
+  <button>Add New Article</button>
 </a>
 <h1>{{error}}</h1>
 <ol>
-  {{#if render}} {{#each products}}
+  {{#if render}} {{#each articles}}
   <li>
-    <h3>Name:
-      <a href="/{{../endpoint}}/{{id}}"> {{name}}</a>
+    <h3>Title:
+      <a href="/{{../endpoint}}/{{urlTitle}}"> {{title}}</a>
     </h3>
-    <p>Price: {{price}}</p>
-    <p>Inventory: {{inventory}}</p>
+    <p>Author: {{author}}</p>
+    <p>Body: {{body}}</p>
   </li>
-  <form action="/{{../endpoint}}/{{id}}?_method=DELETE" method="POST">
+  <form action="/{{../endpoint}}/{{urlTitle}}?_method=DELETE" method="POST">
     <input type="submit" value="Delete">
   </form>
   {{/each}} {{/if}}

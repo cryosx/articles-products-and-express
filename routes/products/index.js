@@ -3,19 +3,10 @@ const router = express.Router();
 
 const productsDB = require('../../db/products.js');
 const checkFieldsExist = require('../../util/checkFieldsExist.js');
-const checkFieldsDataType = require('../../util/checkFieldsDataType.js');
 
 let deleteMessage = null;
 
 router.use(checkFieldsExist(['name', 'price', 'inventory']));
-// router.use(
-//
-//   checkFieldsDataType('products', {
-//     name: 'string',
-//     price: 'number',
-//     inventory: 'number'
-//   })
-// );
 
 router
   .route('/')
@@ -64,14 +55,18 @@ router
 
     return res.render('products/product', {
       endpoint: 'products',
-      product: productsDB.get(prodID)
+      product: prodExists
     });
   })
   .put((req, res) => {
     const data = req.body;
-
     let prodID = Number.parseInt(req.params.id);
-    // data.id = prodID;
+
+    let prodExists = productsDB.get(prodID);
+
+    if (!prodExists) {
+      return res.render('404');
+    }
 
     let failedPutValidation = validateProductInput(data);
     if (failedPutValidation) {
@@ -98,7 +93,7 @@ router
 
 router.route('/:id/edit').get((req, res) => {
   let prodID = Number.parseInt(req.params.id);
-  return res.render('edit', {
+  return res.render('products/edit', {
     endpoint: 'products',
     id: prodID,
     product: productsDB.get(prodID)
@@ -113,6 +108,9 @@ function validateProductInput(data) {
   if (data.inventory.trim() === '') return 'Inventory is not a number.';
   if (Number.isNaN(new Number(data.inventory).valueOf()))
     return 'Inventory is not a number.';
+  if (data.price < 0) return 'Price should be a positive number.';
+  if (data.inventory < 0) return 'Inventory should be a positive number.';
+
   return false;
 }
 

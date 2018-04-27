@@ -21,6 +21,8 @@ module.exports = function(fields) {
         }
         break;
       case 'PUT':
+        console.log(fields);
+        console.log(data);
         let haveFields = Object.keys(data).every(function(field) {
           return fields.includes(field);
         });
@@ -28,7 +30,7 @@ module.exports = function(fields) {
         if (!haveFields) {
           return res.json({
             success: false,
-            message: 'Fields do no match',
+            message: 'Fields do not match',
             fields: fields
           });
         }
