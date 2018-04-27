@@ -1,5 +1,5 @@
 module.exports = function(fields) {
-  return function checkFields(req, res, next) {
+  return function checkFieldsExist(req, res, next) {
     if (Object.entries(req.body).length === 0) {
       return next();
     }
@@ -19,6 +19,7 @@ module.exports = function(fields) {
             fields: fields
           });
         }
+        break;
       case 'PUT':
         let haveFields = Object.keys(data).every(function(field) {
           return fields.includes(field);
@@ -31,7 +32,9 @@ module.exports = function(fields) {
             fields: fields
           });
         }
+        break;
       default:
+        break;
     }
 
     return next();

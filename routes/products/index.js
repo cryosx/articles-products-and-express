@@ -1,49 +1,55 @@
 const express = require('express');
 const router = express.Router();
-// const path = require('path');
-
-// const productsDbPath = path.join(__, 'db/products.js');
 
 const productsDB = require('../../db/products.js');
 const checkFieldsExist = require('../../util/checkFieldsExist.js');
-const checkFieldsDataType = require('../../util/checkFieldsData.js');
+const checkFieldsDataType = require('../../util/checkFieldsDataType.js');
 
-let deleteError = null;
+let deleteMessage = null;
 
 router.use(checkFieldsExist(['name', 'price', 'inventory']));
 // router.use(
-//   checkFieldsDataType({ name: 'string', price: 'number', inventory: 'number' })
+//
+//   checkFieldsDataType('products', {
+//     name: 'string',
+//     price: 'number',
+//     inventory: 'number'
+//   })
 // );
+
 router
   .route('/')
   .get((req, res) => {
     let productsArr = productsDB.getAll();
     return res.render(
-      'index',
+      'products/index',
       {
         endpoint: 'products',
-        error: deleteError,
+        error: deleteMessage,
         products: productsArr,
         render: productsArr.length
       },
       (err, html) => {
-        deleteError = null;
+        deleteMessage = null;
         res.send(html);
       }
     );
   })
   .post((req, res) => {
     const data = req.body;
-    let failedPostValidation = validatePost(data);
+    let failedPostValidation = validateProductInput(data);
     if (failedPostValidation) {
-      return res.render('new', { error: failedPostValidation, product: data });
+      return res.render('products/new', {
+        error: failedPostValidation,
+        product: data
+      });
     }
     productsDB.create(data);
     return res.redirect('/products');
   });
 
 router.route('/new').get((req, res) => {
-  return res.render('new');
+  return res.render('products/new');
 });
 
 router
@@ -56,7 +62,7 @@ router
       return res.render('404');
     }
 
-    return res.render('product', {
+    return res.render('products/product', {
       endpoint: 'products',
       product: productsDB.get(prodID)
     });
@@ -65,12 +71,14 @@ router
     const data = req.body;
 
     let prodID = Number.parseInt(req.params.id);
-    data.id = prodID;
-    let failedPutValidation = validatePut(data);
+    // data.id = prodID;
+
+    let failedPutValidation = validateProductInput(data);
     if (failedPutValidation) {
-      return res.render('edit', {
+      return res.render('products/edit', {
         endpoint: 'products',
         error: failedPutValidation,
+        id: prodID,
         product: data
       });
     }
@@ -79,11 +87,12 @@ router
   })
   .delete((req, res) => {
     let prodID = Number.parseInt(req.params.id);
-    let deleteFailed = productsDB.delete(prodID).length;
+    let deletedProd = productsDB.delete(prodID)[0];
 
-    if (deleteFailed) {
-      deleteError = 'Could not delete product.';
+    if (!deletedProd) {
+      return (deleteMessage = `Could not delete ${deletedProd.name}.`);
     }
+    deleteMessage = `Deleted ${deletedProd.name}`;
     return res.redirect(`/products`);
   });
 
@@ -91,9 +100,21 @@ router.route('/:id/edit').get((req, res) => {
   let prodID = Number.parseInt(req.params.id);
   return res.render('edit', {
     endpoint: 'products',
+    id: prodID,
     product: productsDB.get(prodID)
   });
 });
+
+function validateProductInput(data) {
+  console.log(Number.isNaN(new Number(data.inventory)));
+  if (data.price.trim() === '') return 'Price is not a number.';
+  if (Number.isNaN(new Number(data.price).valueOf()))
+    return 'Price is not a number.';
+  if (data.inventory.trim() === '') return 'Inventory is not a number.';
+  if (Number.isNaN(new Number(data.inventory).valueOf()))
+    return 'Inventory is not a number.';
+  return false;
+}
 
 function validatePut(data) {
   if (!data) return 'No body.';
@@ -102,7 +123,11 @@ function validatePut(data) {
   if (!data.inventory) return 'No inventory.';
   if (Number.isNaN(new Number(data.price).valueOf()))
     return 'Price is not a number.';
+  if (Number.isNaN(Number.parseFloat(data.price)))
+    return 'Price is not a number.';
   if (Number.isNaN(new Number(data.inventory).valueOf()))
+    return 'Iventory is not a number';
+  if (Number.isNaN(Number.parseInt(data.inventory)))
     return 'Iventory is not a number';
   // if (!productsDB.getByName(data.name))
   //   return `Product with name '${data.name}' doesnt exist.`;
@@ -116,7 +141,11 @@ function validatePost(data) {
   if (!data.inventory) return 'No inventory.';
   if (Number.isNaN(new Number(data.price).valueOf()))
     return 'Price is not a number.';
+  if (Number.isNaN(Number.parseFloat(data.price)))
+    return 'Price is not a number.';
   if (Number.isNaN(new Number(data.inventory).valueOf()))
+    return 'Iventory is not a number';
+  if (Number.isNaN(Number.parseInt(data.inventory)))
     return 'Iventory is not a number';
   // if (productsDB.getByName(data.name))
   //   return `Product with name '${data.name}' already exists.`;

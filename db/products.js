@@ -1,6 +1,6 @@
 module.exports = (function() {
-  let products = [{ name: 'test', price: 23, inventory: 2, id: 0 }];
-  let uniqueID = 1;
+  let products = [{ name: 'test', price: 23, inventory: 2, id: 1 }];
+  let uniqueID = 2;
   return {
     get: getProduct,
     getByName: getProductByName,
@@ -43,14 +43,14 @@ module.exports = (function() {
     }
   }
   function deleteProduct(id) {
-    let prodIndex = null;
-    let product = products.find(function(elem, index) {
-      if (elem.id === id) {
-        prodIndex = index;
-        return true;
-      }
-      return false;
+    let prodIndex = products.findIndex(function(elem, index) {
+      return elem.id === id;
     });
+
+    if (prodIndex === -1) {
+      return false;
+    }
     return products.splice(prodIndex, 1);
+    // return true;
   }
 })();
