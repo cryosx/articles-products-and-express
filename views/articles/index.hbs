@@ -1,18 +1,42 @@
-<a href="/{{endpoint}}/new">
-  <button>Add New Article</button>
+<a id="add_article_btn" href="/{{endpoint}}/new">
+  <button>
+    <i class="fas fa-plus"></i>
+  </button>
 </a>
 <h1>{{error}}</h1>
+<div id="articles_container">
+  {{#if render}} {{#each articles}}
+
+  <div class="card">
+    <div class="card_header">
+      <form action="/{{../endpoint}}/{{urlTitle}}?_method=DELETE" method="POST">
+        <button type="submit">
+          <i class="fas fa-times"></i>
+        </button>
+      </form>
+    </div>
+    <div class="card_body">
+      <div class="card_title">{{title}}</div>
+      <div class="card_author">By {{author}}</div>
+      <div class="card_body_text">{{body}}</div>
+    </div>
+  </div>
+  {{/each}} {{/if}}
+</div>
+{{!--
+
 <ol>
   {{#if render}} {{#each articles}}
+
   <li>
     <h3>Title:
-      <a href="/{{../endpoint}}/{{urlTitle}}"> {{title}}</a>
+      <a href="/{{../endpoint}}/{{urlTitle}} "> {{title}}</a>
     </h3>
     <p>Author: {{author}}</p>
     <p>Body: {{body}}</p>
   </li>
-  <form action="/{{../endpoint}}/{{urlTitle}}?_method=DELETE" method="POST">
-    <input type="submit" value="Delete">
+  <form action="/{{../endpoint}}/{{urlTitle}}?_method=DELETE " method="POST ">
+    <input type="submit " value="Delete ">
   </form>
   {{/each}} {{/if}}
-</ol>
+</ol> --}}

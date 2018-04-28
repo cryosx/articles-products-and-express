@@ -75,6 +75,7 @@ router
     return res.redirect(`/articles/${article.urlTitle}`);
   })
   .delete((req, res) => {
+    console.log('delete');
     let articleTitle = decodeURI(req.params.title);
     let urlTitle = req.params.title;
     let deletedArticle = articlesDB.delete(articleTitle)[0];

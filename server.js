@@ -30,10 +30,10 @@ server.use(express.static('public'));
 // ROUTING
 server.use('/', routes);
 
-server.get('*', (req, res) => {
-  console.log(`Catchall GET`);
-  res.json({ success: false });
-});
+// server.get('*', (req, res) => {
+//   console.log(`Catchall GET`);
+//   res.json({ success: false });
+// });
 server.listen(PORT, err => {
   console.log(`Server listening on port: ${PORT}`);
 });
