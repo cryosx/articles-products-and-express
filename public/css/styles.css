@@ -1,3 +1,65 @@
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   margin: 0;
+}
+
+body .header {
+  font-family: "Open Sans Condensed", sans-serif;
+  font-weight: normal;
+}
+
+body #routes {
+  display: flex;
+  width: 100vw;
+  height: 360px;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+body #routes a {
+  font-size: 1.5rem;
+  margin: 4px;
+  text-decoration: none;
+}
+
+body #routes a label {
+  font-family: "Raleway", sans-serif;
+  font-size: 3.5rem;
+  color: white;
+  position: relative;
+}
+
+body #routes a:hover {
+  box-shadow: 1px 8px 20px grey;
+  -webkit-transition: box-shadow 0.3s ease-in;
+}
+
+body #articles-route {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../assets/articles-bg.png");
+}
+
+body #articles-route label {
+  left: -8%;
+}
+
+body #products-route {
+  display: flex;
+  align-items: center;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25)), url("../assets/products-bg.png");
+}
+
+body #products-route label {
+  left: 8%;
+}
+
+body .route {
+  flex: 1 1 40vw;
+  background-position: center;
+  background-size: cover;
 }
