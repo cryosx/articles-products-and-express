@@ -6,19 +6,20 @@
 <h1>{{error}}</h1>
 <div id="articles_container">
   {{#if render}} {{#each articles}}
-
   <div class="card">
-    <div class="card_header">
-      <form action="/{{../endpoint}}/{{urlTitle}}?_method=DELETE" method="POST">
-        <button type="submit">
-          <i class="fas fa-times"></i>
-        </button>
-      </form>
-    </div>
+    <a href="/{{../endpoint}}/{{urlTitle}}">
+      <div class="card_header">
+        <form action="/{{../endpoint}}/{{urlTitle}}?_method=DELETE" method="POST">
+          <button type="submit">
+            <i class="fas fa-times"></i>
+          </button>
+        </form>
+      </div>
+    </a>
     <div class="card_body">
-      <div class="card_title">{{title}}</div>
-      <div class="card_author">By {{author}}</div>
-      <div class="card_body_text">{{body}}</div>
+      <div class="card_title card_content">{{title}}</div>
+      <div class="card_author card_content">By {{author}}</div>
+      <div class="card_body_text card_content">{{body}}</div>
     </div>
   </div>
   {{/each}} {{/if}}
