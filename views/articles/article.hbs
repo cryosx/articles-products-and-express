@@ -1,17 +1,36 @@
-<h3>Title: {{article.title}}</h3>
-<p>Author: {{article.author}}</p>
-<p>Body: {{article.body}}</p>
-<p>URL Title: {{article.urlTitle}}</p>
+<div id="article_container">
+  <div id="article">
+
+    <div id="article_poster"></div>
+
+    <div id="vert_divider_outer">
+      <div id="vert_divider_inner">
+      </div>
+    </div>
+
+    <div id="article_title">{{article.title}}</div>
+    <div id="article_author">by {{article.author}}</div>
+    <div id="article_body">{{article.body}}</div>
 
 
-<a href="/{{endpoint}}">
-  <button>All Articles</button>
-</a>
+    {{!--
+    <h3>Title: {{article.title}}</h3>
+    <p>Author: {{article.author}}</p>
+    <p>Body: {{article.body}}</p> --}} {{!--
+    <a href="/{{endpoint}}">
+      <button>All Articles</button>
+    </a> --}}
+    <div id="article_button_container">
+      <a id="article_edit" href="/{{endpoint}}/{{article.title}}/edit">
+        <i class="material-icons">edit</i>
+      </a>
 
-<a href="/{{endpoint}}/{{article.title}}/edit">
-  <button>Edit Article</button>
-</a>
+      <form id="article_delete" action="/{{endpoint}}/{{article.urlTitle}}?_method=DELETE" method="POST">
+        <button type="submit" value="Delete">
+          <i class="material-icons">delete</i>
+        </button>
+      </form>
+    </div>
 
-<form action="/{{endpoint}}/{{article.urlTitle}}?_method=DELETE" method="POST">
-  <input type="submit" value="Delete">
-</form>
+  </div>
+</div>

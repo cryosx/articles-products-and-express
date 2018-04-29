@@ -15,6 +15,7 @@ router
     return res.render(
       'articles/index',
       {
+        back: '',
         endpoint: 'articles',
         error: deleteMessage,
         articles: articlesArr,
@@ -31,6 +32,7 @@ router
     let failedPostValidation = validateArticlePost(data);
     if (failedPostValidation) {
       return res.render('articles/new', {
+        back: 'articles',
         error: failedPostValidation,
         article: data
       });
@@ -40,7 +42,7 @@ router
   });
 
 router.route('/new').get((req, res) => {
-  return res.render('articles/new');
+  return res.render('articles/new', { back: 'articles' });
 });
 
 router
@@ -54,6 +56,7 @@ router
     }
 
     return res.render('articles/article', {
+      back: 'articles',
       endpoint: 'articles',
       article: article
     });
@@ -61,9 +64,13 @@ router
   .put((req, res) => {
     const data = req.body;
     let urlTitle = req.params.title;
+    console.log(data.title);
+    console.log(urlTitle);
+
     let failedPutValidation = validateArticlePut(data, urlTitle);
     if (failedPutValidation) {
       return res.render('articles/edit', {
+        back: urlTitle,
         endpoint: 'articles',
         error: failedPutValidation,
         urlTitle: urlTitle,
@@ -89,6 +96,7 @@ router.route('/:title/edit').get((req, res) => {
   let articleTitle = decodeURI(req.params.title);
   let urlTitle = req.params.title;
   return res.render('articles/edit', {
+    back: urlTitle,
     endpoint: 'articles',
     urlTitle: urlTitle,
     article: articlesDB.get(articleTitle)
@@ -102,7 +110,6 @@ function validateArticlePost(data) {
 }
 
 function validateArticlePut(data, urlTitle) {
-  console.log(data);
   if (data.title === decodeURI(urlTitle)) return false;
   if (data.title.trim() === '') return 'Title cannot be an empty string';
   if (data.author.trim() === '') return 'Author cannot be an empty string';

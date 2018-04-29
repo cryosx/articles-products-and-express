@@ -4,17 +4,18 @@ body {
 }
 
 body header {
-  display: flex;
+  display: grid;
+  grid-template-columns: repeat(5, 20%);
+  grid-template-rows: 100%;
   background-color: white;
   height: 54px;
-  justify-content: center;
-  align-items: center;
   font-family: "Open Sans Condensed", sans-serif;
   -webkit-box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
 }
 
 body header a {
+  color: black;
   text-decoration: none;
 }
 
@@ -24,4 +25,31 @@ body header a h1 {
 
 body header a:visited {
   color: inherit;
+}
+
+body header #back {
+  grid-area: 1/1/1/1;
+  align-self: center;
+  margin-left: 32px;
+  font-size: 1.5rem;
+  color: linear-gradient(188deg, #246655, #d73e1b);
+  animation: AnimationName 30s ease infinite;
+}
+
+@keyframes AnimationName {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+body header #header_sitename {
+  grid-area: 1/1/1/6;
+  justify-self: center;
+  align-self: center;
 }
