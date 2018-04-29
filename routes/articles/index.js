@@ -29,7 +29,6 @@ router
   .post((req, res) => {
     const data = req.body;
     let failedPostValidation = validateArticlePost(data);
-    console.log(failedPostValidation);
     if (failedPostValidation) {
       return res.render('articles/new', {
         error: failedPostValidation,
@@ -62,7 +61,7 @@ router
   .put((req, res) => {
     const data = req.body;
     let urlTitle = req.params.title;
-    let failedPutValidation = validateArticlePut(data);
+    let failedPutValidation = validateArticlePut(data, urlTitle);
     if (failedPutValidation) {
       return res.render('articles/edit', {
         endpoint: 'articles',
@@ -75,7 +74,6 @@ router
     return res.redirect(`/articles/${article.urlTitle}`);
   })
   .delete((req, res) => {
-    console.log('delete');
     let articleTitle = decodeURI(req.params.title);
     let urlTitle = req.params.title;
     let deletedArticle = articlesDB.delete(articleTitle)[0];
@@ -103,13 +101,23 @@ function validateArticlePost(data) {
   return false;
 }
 
-function validateArticlePut(data) {
+function validateArticlePut(data, urlTitle) {
+  console.log(data);
+  if (data.title === decodeURI(urlTitle)) return false;
+  if (data.title.trim() === '') return 'Title cannot be an empty string';
+  if (data.author.trim() === '') return 'Author cannot be an empty string';
+  if (data.body.trim() === '') return 'Body cannot be an empty string';
+
   let exists = articlesDB.get(data.title);
   if (exists) return 'Another article already exists with that title';
   return false;
 }
 
-function validateArticleInput(data) {
+function validateArticlePost(data) {
+  if (data.title.trim() === '') return 'Title cannot be an empty string';
+  if (data.author.trim() === '') return 'Author cannot be an empty string';
+  if (data.body.trim() === '') return 'Body cannot be an empty string';
+
   return false;
 }
 
