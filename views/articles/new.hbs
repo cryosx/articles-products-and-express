@@ -1,5 +1,26 @@
 <form action="/articles" method="POST">
-  Article Title:
+
+  <div id="article_form_container">
+    <div id="article_form">
+      <div id="article_form_left">
+        <a id="article_form_back" href="/articles">
+          <i class="fas fa-arrow-left"></i>
+        </a>
+        <label id="input_title_label" class="article_input_label" for="article_input_title">Title</label>
+        <label id="input_author_label" class="article_input_label" for="article_input_author">Author</label>
+        <label id="input_body_label" class="article_input_label" for="article_input_body">Body</label>
+      </div>
+      <div id="article_form_right">
+        <div id="article_form_header">Add a new article</div>
+        <textarea id="article_input_title" class="article_input" name="title">{{article.title}}</textarea>
+        <textarea id="article_input_author" class="article_input" type="text" name="author">{{article.author}}</textarea>
+        <textarea id="article_input_body" class="article_input" type="text" name="body">{{article.body}}</textarea>
+        <input id="article_form_submit" type="submit">
+      </div>
+    </div>
+  </div>
+
+  {{!-- Article Title:
   <input type="text" name="title" value='{{article.title}}'>
   <br> Author:
   <input type="text" name="author" value='{{article.author}}'>
@@ -7,6 +28,6 @@
   <input type="text" name="body" value='{{article.body}}'>
   <br>
   <br>
-  <input type="submit">
+  <input type="submit"> --}}
 </form>
 <h1>{{error}}</h1>
