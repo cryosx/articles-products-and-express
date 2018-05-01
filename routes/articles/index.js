@@ -1,8 +1,9 @@
 const express = require('express');
-const router = express.Router();
 
 const articlesDB = require('../../db/articles.js');
 const checkFieldsExist = require('../../util/checkFieldsExist.js');
+
+const router = express.Router();
 
 let deleteMessage = null;
 
@@ -12,24 +13,19 @@ router
   .route('/')
   .get((req, res) => {
     let articlesArr = articlesDB.getAll();
-    return res.render(
-      'articles/index',
-      {
-        back: '',
-        endpoint: 'articles',
-        error: deleteMessage,
-        articles: articlesArr,
-        render: articlesArr.length
-      },
-      (err, html) => {
-        deleteMessage = null;
-        res.send(html);
-      }
-    );
+    res.render('articles/index', {
+      back: '',
+      endpoint: 'articles',
+      error: deleteMessage,
+      articles: articlesArr,
+      render: articlesArr.length
+    });
+    return (deleteMessage = null);
   })
   .post((req, res) => {
     const data = req.body;
     let failedPostValidation = validateArticlePost(data);
+    console.log(failedPostValidation);
     if (failedPostValidation) {
       return res.render('articles/new', {
         back: 'articles',
@@ -64,8 +60,6 @@ router
   .put((req, res) => {
     const data = req.body;
     let urlTitle = req.params.title;
-    console.log(data.title);
-    console.log(urlTitle);
 
     let failedPutValidation = validateArticlePut(data, urlTitle);
     if (failedPutValidation) {
@@ -86,7 +80,8 @@ router
     let deletedArticle = articlesDB.delete(articleTitle)[0];
 
     if (!deletedArticle) {
-      return (deleteMessage = `Could not delete ${deletedArticle.title}.`);
+      deleteMessage = `Could not delete ${deletedArticle.title}.`;
+      return res.status(404).send();
     }
     deleteMessage = `Deleted ${deletedArticle.title}`;
     return res.redirect(`/articles`);
@@ -95,17 +90,21 @@ router
 router.route('/:title/edit').get((req, res) => {
   let articleTitle = decodeURI(req.params.title);
   let urlTitle = req.params.title;
+  let article = articlesDB.get(articleTitle);
   return res.render('articles/edit', {
     back: urlTitle,
     endpoint: 'articles',
     urlTitle: urlTitle,
-    article: articlesDB.get(articleTitle)
+    article: article
   });
 });
 
 function validateArticlePost(data) {
   let exists = articlesDB.get(data.title);
   if (exists) return 'Article exists';
+  if (data.title.trim() === '') return 'Title cannot be an empty string';
+  if (data.author.trim() === '') return 'Author cannot be an empty string';
+  if (data.body.trim() === '') return 'Body cannot be an empty string';
   return false;
 }
 
@@ -120,12 +119,12 @@ function validateArticlePut(data, urlTitle) {
   return false;
 }
 
-function validateArticlePost(data) {
-  if (data.title.trim() === '') return 'Title cannot be an empty string';
-  if (data.author.trim() === '') return 'Author cannot be an empty string';
-  if (data.body.trim() === '') return 'Body cannot be an empty string';
+// function validateArticlePost(data) {
+//   if (data.title.trim() === '') return 'Title cannot be an empty string';
+//   if (data.author.trim() === '') return 'Author cannot be an empty string';
+//   if (data.body.trim() === '') return 'Body cannot be an empty string';
 
-  return false;
-}
+//   return false;
+// }
 
 module.exports = router;

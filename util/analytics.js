@@ -18,7 +18,7 @@ module.exports = (function() {
     let data = `[${dateString} ${timeString}] ${req.method} ${req.url} `;
 
     fs.appendFile(`logs/${dateString}.log`, `${data}\r\n`, function(err) {
-      if (err) throw err;
+      if (err) console.error(err);
     });
     return next();
   };

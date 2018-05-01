@@ -32,6 +32,7 @@ module.exports = (function() {
     let article = articles.find(function(elem) {
       return elem.title === title;
     });
+    console.log(article);
     return article;
   }
   function getAllArticles() {
@@ -42,6 +43,7 @@ module.exports = (function() {
     // if (!exists) {
     //   return false;
     // }
+    console.log(data);
     let article = {
       title: data.title,
       author: data.author,

@@ -34,7 +34,7 @@ body #routes a label {
 
 body #routes a:hover {
   box-shadow: 1px 8px 20px grey;
-  -webkit-transition: box-shadow 0.3s ease-in;
+  transition: box-shadow 0.3s;
 }
 
 body #articles-route {

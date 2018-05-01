@@ -5,7 +5,7 @@
 </a>
 <h1>{{error}}</h1>
 <div id="articles_container">
-  {{#if render}} {{#each articles}}
+  {{#each articles}}
   <div class="card">
     <a href="/{{../endpoint}}/{{urlTitle}}">
       <div class="card_header">
@@ -22,7 +22,7 @@
       <div class="card_body_text card_content">{{body}}</div>
     </div>
   </div>
-  {{/each}} {{/if}}
+  {{/each}}
 </div>
 {{!--
 

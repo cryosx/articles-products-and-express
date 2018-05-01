@@ -13,7 +13,7 @@ module.exports = function(fields) {
         });
 
         if (!haveEveryField) {
-          return res.json({
+          return res.status(400).json({
             success: false,
             message: 'Does not have every field',
             fields: fields
@@ -21,14 +21,12 @@ module.exports = function(fields) {
         }
         break;
       case 'PUT':
-        console.log(fields);
-        console.log(data);
         let haveFields = Object.keys(data).every(function(field) {
           return fields.includes(field);
         });
 
         if (!haveFields) {
-          return res.json({
+          return res.status(400).json({
             success: false,
             message: 'Fields do not match',
             fields: fields

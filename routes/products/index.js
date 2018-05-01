@@ -47,24 +47,24 @@ router
   .route('/:id')
   .get((req, res) => {
     let prodID = Number.parseInt(req.params.id);
-    let prodExists = productsDB.get(prodID);
+    let product = productsDB.get(prodID);
 
-    if (!prodExists) {
-      return res.render('404');
+    if (!product) {
+      return res.status(404).render('404');
     }
 
     return res.render('products/product', {
       endpoint: 'products',
-      product: prodExists
+      product: product
     });
   })
   .put((req, res) => {
     const data = req.body;
     let prodID = Number.parseInt(req.params.id);
 
-    let prodExists = productsDB.get(prodID);
+    let product = productsDB.get(prodID);
 
-    if (!prodExists) {
+    if (!product) {
       return res.render('404');
     }
 
@@ -85,7 +85,8 @@ router
     let deletedProd = productsDB.delete(prodID)[0];
 
     if (!deletedProd) {
-      return (deleteMessage = `Could not delete ${deletedProd.name}.`);
+      deleteMessage = `Could not delete ${deletedProd.name}.`;
+      return res.status(404).send();
     }
     deleteMessage = `Deleted ${deletedProd.name}`;
     return res.redirect(`/products`);
@@ -93,15 +94,15 @@ router
 
 router.route('/:id/edit').get((req, res) => {
   let prodID = Number.parseInt(req.params.id);
+  let product = productsDB.get(prodID);
   return res.render('products/edit', {
     endpoint: 'products',
     id: prodID,
-    product: productsDB.get(prodID)
+    product: product
   });
 });
 
 function validateProductInput(data) {
-  console.log(Number.isNaN(new Number(data.inventory)));
   if (data.price.trim() === '') return 'Price is not a number.';
   if (Number.isNaN(new Number(data.price).valueOf()))
     return 'Price is not a number.';
